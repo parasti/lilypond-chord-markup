@@ -16,11 +16,15 @@
 %  Transpose chords in existing markup. You can use this with \book to make chord sheets in different keys:
 %    \markup \override #'(transpose . ("c" . "f")) \existingChordMarkup
 %    \markuplist ... \existingChordMarkupList
+%    or use \transpose c f \existingChordMarkup
 %  Color, font, etc, can be controlled via \layout:
 %    \layout {
 %      \override ChordNames.ChordName.font-size = #0.0
 %      \override ChordNames.ChordName.color = #red
 %    }
+%  Arbitrary text over a lyric (empty in the example). Use this for instructions, parenthesis, whatever.
+%    \markup \with-chord d:m youuuuu \with-chord-text (2x) " "
+%    or use \cht instead of \with-chord-text
 
 
 #(define (string->music str)
@@ -58,24 +62,32 @@
        #})))
 
 
-#(define-markup-command (with-chord layout props chord lyric) (markup? markup?)
+#(define-markup-command (with-chord-text layout props text lyric) (markup? markup?)
    ; We use the extent of the lyric, but sometimes the chord overlaps successive chords.
    ; To use the full extent of the combined stencil, use this:
    ;   \override #'(full-extent . 1)
    ;   \with-chord c lyric
    ; TODO If I actually knew Scheme, I could check for overlap.
    #:properties ((full-extent 0))
-   "Single chord superimposed over a lyric."
+   "Arbitrary text superimposed over a lyric."
    (let* ((mup #{ \markup
                   \override #'(direction . 1)
                   \override #'(baseline-skip . 2)
-                  \dir-column { #lyric \chord #chord } #}) ; Used twice, save typing.
+                  \dir-column { #lyric #text } #}) ; Used twice, save typing.
           (mstil (interpret-markup layout props mup)) ; Combined stencil
           (lstil (interpret-markup layout props lyric)) ; Lyric stencil
           (x (ly:stencil-extent (if (equal? full-extent 1) mstil lstil) X)) ; Desired X extent
           (y (interval-widen (ly:stencil-extent mstil Y) 0.25))) ; Combined Y extent, some padding
      (interpret-markup layout props #{ \markup \with-dimensions #x #y #mup #})))
 
+
+#(define-markup-command (with-chord layout props chord lyric) (markup? markup?)
+   "Chord superimposed over a lyric."
+   (interpret-markup layout props #{ \markup \with-chord-text \chord #chord #lyric #} ))
+
+%----------
+% Shortcuts
+%----------
 
 #(define-markup-command (ch layout props chord lyric) (markup? markup?)
    "Shortcut for \\markup \\with-chord chord lyric"
@@ -85,3 +97,13 @@
 #(define-markup-command (chf layout props chord lyric) (markup? markup?)
    "Shortcut for \\markup \\override #'(full-extent . 1) \\with-chord chord lyric"
    (interpret-markup layout props #{ \markup \override #'(full-extent . 1) \with-chord #chord #lyric #}))
+
+
+#(define-markup-command (cht layout props text lyric) (markup? markup?)
+   "Shortcut for \\markup \\with-chord-text text lyric"
+   (interpret-markup layout props #{ \markup \with-chord-text #text #lyric #}))
+
+
+#(define-markup-command (transpose layout props from to arg) (markup? markup? markup?)
+   "Shortcut for \\markup \\override #'(transpose . (\"from\" . \"to\")) chords"
+   (interpret-markup layout (prepend-alist-chain 'transpose (cons (markup->string from) (markup->string to)) props) arg))

@@ -68,11 +68,12 @@
    "Single chord superimposed over a lyric."
    (let* ((mup #{ \markup
                   \override #'(direction . 1)
+                  \override #'(baseline-skip . 2)
                   \dir-column { #lyric \chord #chord } #}) ; Used twice, save typing.
           (mstil (interpret-markup layout props mup)) ; Combined stencil
           (lstil (interpret-markup layout props lyric)) ; Lyric stencil
           (x (ly:stencil-extent (if (equal? full-extent 1) mstil lstil) X)) ; Desired X extent
-          (y (interval-widen (ly:stencil-extent mstil Y) 0.5))) ; Combined Y extent, some padding
+          (y (interval-widen (ly:stencil-extent mstil Y) 0.25))) ; Combined Y extent, some padding
      (interpret-markup layout props #{ \markup \with-dimensions #x #y #mup #})))
 
 

@@ -1,30 +1,6 @@
 \version "2.18.2"
 
-% (c) 2014-2016 Jānis Rūcis
-%
-% A collection of cobbled-together LilyPond markup commands for chord sheets.
-%
-% Examples:
-%  List of chords:
-%    \markup \line { Intro: \chord d:maj7 \chord e:m \chord c:1.5.8 }
-%  Chord over a lyric
-%    \markup { \with-chord f This is the \with-chord a/e last time I'll \concat { a \with-chord d:m bandon } youuuuuu }
-%    or use \ch instead of \with-chord
-%  Chords use lyric dimensions and may sometimes overlap successive chords. To fix it, use chord dimensions:
-%    \markup { \override #'(full-extent . 1) \with-chord fis:m I \with-chord e:m lie. }
-%    or use \chf instead of \override %'(full-extent . 1) \with-chord
-%  Transpose chords in existing markup. You can use this with \book to make chord sheets in different keys:
-%    \markup \override #'(transpose . ("c" . "f")) \existingChordMarkup
-%    \markuplist ... \existingChordMarkupList
-%    or use \transpose c f \existingChordMarkup
-%  Color, font, etc, can be controlled via \layout:
-%    \layout {
-%      \override ChordNames.ChordName.font-size = #0.0
-%      \override ChordNames.ChordName.color = #red
-%    }
-%  Arbitrary text over a lyric (empty in the example). Use this for instructions, parenthesis, whatever.
-%    \markup \with-chord d:m youuuuu \with-chord-text (2x) " "
-%    or use \cht instead of \with-chord-text
+% (c) 2014-2017 Jānis Rūcis
 
 
 #(define (string->music str)

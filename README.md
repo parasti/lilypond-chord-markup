@@ -3,6 +3,10 @@ LilyPond markup commands for displaying chords and making chord/lyric sheets
 
 ## Usage
 
+```lilypond
+\include "chord-markup.ly"
+```
+
 ### Chords and lists of chords
 ```lilypond
 \markup \line { Intro: \chord d:maj7 \chord e:m \chord c:1.5.8 }

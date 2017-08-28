@@ -16,11 +16,14 @@ LilyPond markup commands for displaying chords and making chord/lyric sheets
   }
 }
 ```
+![LilyPond output 1](images/image1.png)
 
 ### Chord over a lyric
 ```lilypond
 \markup { \with-chord f This is the \with-chord a/e last time I'll \concat { a \with-chord d:m bandon } you }
 ```
+![LilyPond output 2](images/image2.png)
+
 Or use `\ch` instead of `\with-chord`.
 
 ### Fixing overlap
@@ -28,6 +31,8 @@ Chords use lyric dimensions and may sometimes overlap successive chords. To fix 
 ```lilypond
 \markup { \override #'(full-extent . 1) \with-chord fis:m I \with-chord e:m lie. }
 ```
+![LilyPond output 3](images/image3.png)
+
 Or use `\chf` instead of `\override #'(full-extent . 1) \with-chord`
 
 ### Transposing chords
@@ -42,6 +47,8 @@ chordList = \markup { \chord { c f g } }
   }
 }
 ```
+![LilyPond output 4](images/image4.png)
+
 Or use `\transpose c f \existingChordMarkup`.
 
 ### Formatting options
@@ -58,4 +65,6 @@ You can place arbitrary text over lyrics, positioned and formatted as chord mark
 ```lilypond
 \markup { \with-chord-text \concat { \chord e:m " (2x)" } There's no time }
 ```
+![LilyPond output 6](images/image6.png)
+
 Or use `\cht` instead of `\with-chord-text`.
